@@ -8,6 +8,7 @@ void vector_mul(const double* a, const double* b, double* out, int size)
     // now it's time to trigger it.
     // 1st try.
     // 2nd try.
+    // 3rd try.
     for (int i = 0; i < size; ++i)
     {
         out[i] = a[i] * b[i];
