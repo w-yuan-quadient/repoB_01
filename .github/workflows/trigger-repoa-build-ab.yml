@@ -1,0 +1,26 @@
+name: Trigger RepoA build_ab
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  dispatch_to_repoa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger RepoA workflow via repository_dispatch
+        env:
+          GH_TOKEN: ${{ secrets.GENERAL_TOKAN_20260714 }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Secret GENERAL_TOKAN_20260714 is empty or unavailable in this workflow context"
+            exit 1
+          fi
+
+          curl --fail-with-body -L -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/w-yuan-quadient/repoA_01/dispatches \
+            -d '{"event_type":"repob_push_main","client_payload":{"source_repo":"RepoB_01","source_ref":"${{ github.ref }}","source_sha":"${{ github.sha }}"}}'
